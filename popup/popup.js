@@ -1,18 +1,3 @@
-/*
-small_memo = {
-  id: , // auto incre
-  memo: [
-    {
-      id: ,
-      title: "",
-      content: "",
-      createdAt: "",
-      updatedAt: ""
-    },
-  ]
-}
-*/
-
 const SMALL_MEMO = {
   id: 5,
   memo: [
