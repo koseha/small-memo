@@ -152,7 +152,7 @@ main {
   font-size: 12px;
 }
 .content__date button {
-  width: 40px;
+  width: 36px;
   font-size: 16px;
 }
 
@@ -168,13 +168,16 @@ main {
 }
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto;
+  margin: 75% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 50%;
+  width: 200px;
   text-align: center;
   font-size: 14px;
+  border-radius: 12px;
 }
 .modal-content button {
-  margin: 10px;
+  margin: 8px;
+  width: 58px;
+  height: 26px;
 }
