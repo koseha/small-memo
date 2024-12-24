@@ -69,3 +69,54 @@ small_memo = {
   }
 }
 ```
+<br>
+
+# 저장소(storage) 이용하기
+
+
+
+<br>
+
+# 시간(created at, updated at) 포맷
+
+나라별 기존
+
+```javascript
+const getNow = () => new Date().toLocaleString(navigator.language || 'en-US');
+
+const setMemoDetail = (item) => {
+  memoTitle.value = item.title;
+  memo.value = item.content;
+  createdAt.textContent = item.createdAt;
+  updatedAt.textContent = item.updatedAt;
+}
+
+userMemos.memoOrder.forEach(id => {
+  const initMemo = userMemos.memos[id];
+  createMemoElement(id, initMemo.title, (li) => memoList.append(li));
+});
+```
+
+UTC 적용
+
+```javascript
+const getNow = () => new Date().toISOString();
+
+const setMemoDetail = (item) => {
+  const userLang = navigator.language || 'en-US';
+
+  memoTitle.value = item.title;
+  memo.value = item.content;
+  createdAt.textContent = new Date(item.createdAt).toLocaleString(userLang);
+  updatedAt.textContent = new Date(item.updatedAt).toLocaleString(userLang);
+}
+
+const renderMemoList = () => {
+  SMALL_MEMO.memoOrder.sort((a, b) => new Date(SMALL_MEMO.memos[b].updatedAt) - new Date(SMALL_MEMO.memos[a].updatedAt));
+  
+  SMALL_MEMO.memoOrder.forEach(id => {
+    const title = getMemo(id).title.trim();
+    createMemoElement(id, title || "memo", (li) => memoList.append(li))
+  });
+};
+```

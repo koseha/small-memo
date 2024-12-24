@@ -1,6 +1,3 @@
-import { memoUtils } from "/scripts/memoData.js";
-
-
 const memoTitle = document.getElementById("memoTitle");
 const memo = document.getElementById("memo");
 const createdAt = document.getElementById("createdAt");
@@ -8,14 +5,36 @@ const updatedAt = document.getElementById("updatedAt");
 
 const memoList = document.getElementById("memoList");
 
-let userMemos = memoUtils.getList();
+const STORAGE_NAME = "small_memo";
+const getNow = () => new Date().toISOString();
 
+
+// 메모리에서 데이터 관리
+const SMALL_MEMO = {
+  "lastId": 1,
+  "memoOrder": [1],
+  "memos": {
+    "1": {
+      "id": 1,
+      "title": "First",
+      "content": "",
+      "created at": getNow(),
+      "updated at": getNow()
+    },
+  }
+};
+
+const getMemo = (id) => {
+  return SMALL_MEMO.memos[id];
+};
 
 const setMemoDetail = (item) => {
+  const userLang = navigator.language || 'en-US';
+
   memoTitle.value = item.title;
   memo.value = item.content;
-  createdAt.textContent = item.createdAt;
-  updatedAt.textContent = item.updatedAt;
+  createdAt.textContent = new Date(item.createdAt).toLocaleString(userLang);
+  updatedAt.textContent = new Date(item.updatedAt).toLocaleString(userLang);
 }
 
 const createMemoElement = (id, title, callback) => {
@@ -27,7 +46,7 @@ const createMemoElement = (id, title, callback) => {
   button.setAttribute("data-id", id);
 
   button.addEventListener("click", (e) => {
-    const memo = memoUtils.getMemo(id);
+    const memo = getMemo(id);
     const lis = document.querySelector("li.active");
 
     lis?.classList.remove("active");
@@ -40,36 +59,95 @@ const createMemoElement = (id, title, callback) => {
   callback(li);
 }
 
-// render : memo list
-userMemos.memoOrder.forEach(id => {
-  const initMemo = userMemos.memos[id];
-  createMemoElement(id, initMemo.title, (li) => memoList.append(li));
+/**
+ * @todo : 정렬 기능 추가
+ * - 2024/12/25 : 수정 최신순
+ */
+const renderMemoList = () => {
+  SMALL_MEMO.memoOrder.sort((a, b) => new Date(SMALL_MEMO.memos[b].updatedAt) - new Date(SMALL_MEMO.memos[a].updatedAt));
+  
+  SMALL_MEMO.memoOrder.forEach(id => {
+    const title = getMemo(id).title.trim();
+    createMemoElement(id, title || "memo", (li) => memoList.append(li))
+  });
+};
+
+/**
+ * 팝업 열릴 때 저장소에서 데이터 불러오기
+ */
+chrome.storage.local.get(["STORAGE_NAME"])
+  .then((result) => {
+    if (result.STORAGE_NAME) {
+      Object.assign(SMALL_MEMO, result.STORAGE_NAME);
+    }
+    renderMemoList();
+    document.querySelectorAll(".list__memo")[0].children[0].click();
+  });
+
+/**
+ * 팝업 닫힐 때 저장소에 데이터 저장하기
+ */
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    chrome.storage.local.set({ STORAGE_NAME: SMALL_MEMO });
+  }
 });
 
-// new memo
+
+/**
+ * 새로운 메모 추가
+ */
+const createMemo = () => {
+  const memoId = ++SMALL_MEMO.lastId;
+  const now = getNow();
+
+  const memo = {
+    "id": memoId,
+    "title": "",
+    "content": "",
+    "createdAt": now,
+    "updatedAt": now
+  };
+
+  SMALL_MEMO.memoOrder.push(memoId);
+  SMALL_MEMO.memos[memoId] = memo;
+
+  return memoId;
+}
+
 const newMemo = document.getElementById("newMemo");
 newMemo.addEventListener("click", (e) => {
-  const id = memoUtils.newMemo();
+  const id = createMemo();
   createMemoElement(id, "new", (li) => memoList.prepend(li));
 
   document.querySelectorAll(".list__memo")[0].children[0].click();
 });
 
-// save - title
+/**
+ * 메모 수정-title
+ */
 memoTitle.addEventListener("change", (e) => {
   const id = document.querySelector("li.active").children[0].dataset.id;
   const title = e.target.value;
-  memoUtils.updateTitle(id, title);
+
+  SMALL_MEMO.memos[id].title = title;
+  SMALL_MEMO.memos[id].updatedAt = getNow();
 });
 
-// save - content
+/**
+ * 메모 수정-content
+ */
 memo.addEventListener("change", (e) => {
   const id = document.querySelector("li.active").children[0].dataset.id;
   const content = e.target.value;
-  console.log(memoUtils.updateContent(id, content));
+
+  SMALL_MEMO.memos[id].content = content;
+  SMALL_MEMO.memos[id].updatedAt = getNow();
 });
 
-// remove memo
+/**
+ * 메모 삭제
+ */
 const deleteBtn = document.getElementById("delete");
 deleteBtn.addEventListener("click", (e) => {
   const modal = document.getElementById("deleteModal");
@@ -81,6 +159,10 @@ deleteBtn.addEventListener("click", (e) => {
     li?.remove();
     modal.style.display = "none";
 
+    const id = Number(li.children[0].dataset.id);
+    delete SMALL_MEMO.memos[id];
+    SMALL_MEMO.memoOrder = SMALL_MEMO.memoOrder.filter(memoId => memoId !== id);
+
     if (next) next.children[0].click();
     else newMemo.click();
   };
@@ -90,5 +172,3 @@ deleteBtn.addEventListener("click", (e) => {
   };
 });
 
-// init : 메모장 초기화
-document.querySelectorAll(".list__memo")[0].children[0].click();
