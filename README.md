@@ -1,122 +1,53 @@
-# 데이터 다루기
+# 소개
 
-## 1
+## 프로젝트명: Small Memo
 
-```javascript
-small_memo = {
-  nextId: , // auto incre
-  memo: [
-    {
-      id: ,
-      title: "",
-      content: "",
-      createdAt: "",
-      updatedAt: ""
-    },
-  ]
-}
-```
+버전: 1.0  
+링크: [chrome 웹 스토어 - Small Memo](https://chromewebstore.google.com/detail/small-memo/ckggddlehlcmegnchapdeamiolcknoae?authuser=1&hl=ko)
+<br>
+
+<img src="images/small-memo-intro-1280x800.png" width="700">
+
+### 설명
+
+Small Memo는 사용자가 방문 중인 웹 페이지에서 간편하게 메모를 작성하고 관리할 수 있는 크롬 확장 프로그램입니다. 사용자는 언제든지 빠르게 메모를 추가하거나 수정하고, 기존 메모를 삭제할 수 있습니다. 메모는 저장되어 페이지를 벗어나더라도 유지됩니다.
+
+### 주요 기능:
+
+- 간편한 메모 추가: 사이드바에서 새 메모 버튼을 클릭해 빠르게 메모를 생성할 수 있습니다.
+- 메모 편집 및 업데이트: 작성 중인 메모는 자동으로 업데이트됩니다. 메모 제목과 본문이 실시간으로 수정됩니다.
+- 메모 삭제 기능: 필요 없는 메모는 삭제할 수 있으며, 삭제 전 확인 팝업이 표시됩니다.
+- 날짜 기록: 메모의 생성 및 수정 날짜가 기록되어 언제 작성했는지 확인할 수 있습니다.
+
+### 기술 스택:
+
+  - HTML/CSS: UI 디자인 및 레이아웃 구성
+  - JavaScript: 메모 추가, 편집, 삭제 및 저장 로직 구현
+  - Chrome Extension Manifest V3: 크롬 확장 프로그램 개발 표준을 따릅니다.
+
+### 권한:
+- storage: 확장 프로그램에서 메모 데이터를 저장하고 불러올 수 있는 권한을 사용합니다.
+
+<br>
+<br>
+
+# history
+
+## Release
+
+| 버전 | 날짜 | 상태 | 설명 |
+| --- | --- | --- | --- |
+| 1.0.1 | 예정 | 기획 | - 첫 팝업 로드 시 메모의 추가날짜 Invalid Date 표시되는 문제 해결<br> - 제목 수정 시 버튼에 반영되지 않는 문제 해결<br> - 사이드바 메모 호버 시 title 노출 <br> - ... |
+| 1.0.0 (MVP) | 2024.12.25 | 출시 | - MVP<br> - 메모 작성, 수정, 삭제 기능 추가<br> - 수정 최신순 정렬 기능 추가<br> - `chrome.storage.local` 데이터 저장 |
 
 <br>
 
-## 2
+## Project
 
-위의 데이터 구조는 잦은 데이터 조회와 수정 등에 번거로운 작업이 있음.
-
-### 성능 비교
-
-| 데이터 수 | Array 탐색 (find) |	Object 접근 (memos[id]) |
+| 날짜 | 버전 | 설명 |
 | --- | --- | --- |
-| 10	| O(10) |	O(1) |
-| 100 |	O(100) |	O(1) |
-| 1000 |	O(1000) |	O(1) |
-
-<br>
-
-### 데이터가 많아질 때 기대 효과
-
-- 확장성: 메모가 수백 개에 달해도 조회 및 수정 속도가 느려지지 않습니다.
-- 간결성: 메모 데이터를 Object 형태로 저장하여 탐색이 간단하고 코드가 깔끔해집니다.
-- 메모 순서 조정: UI에서 메모를 드래그하여 순서를 변경하면 memoOrder만 수정되므로 성능이 향상됩니다.
+| 2024.12.25 | 1.0.0 (MVP) | Chrome Web Store에 게시 |
+| 2024.12.25 | 1.0.0 (MVP) | Chrome Web Store에 제출하여 검토 요청 |
 
 
-```javascript
-{
-  "nextId": 51,
-  "memoOrder": [1, 2, 3, 25, 50],
-  "memos": {
-    "1": {
-      "id": 1,
-      "title": "",
-      "content": "",
-      "createdAt": "",
-      "updatedAt": ""
-    },
-    "2": {
-      "id": 1,
-      "title": "",
-      "content": "",
-      "createdAt": "",
-      "updatedAt": ""
-    },
-    "3": {
-      "id": 1,
-      "title": "",
-      "content": "",
-      "createdAt": "",
-      "updatedAt": ""
-    },
-  }
-}
-```
-<br>
-
-# 저장소(storage) 이용하기
-
-
-
-<br>
-
-# 시간(created at, updated at) 포맷
-
-나라별 기존
-
-```javascript
-const getNow = () => new Date().toLocaleString(navigator.language || 'en-US');
-
-const setMemoDetail = (item) => {
-  memoTitle.value = item.title;
-  memo.value = item.content;
-  createdAt.textContent = item.createdAt;
-  updatedAt.textContent = item.updatedAt;
-}
-
-userMemos.memoOrder.forEach(id => {
-  const initMemo = userMemos.memos[id];
-  createMemoElement(id, initMemo.title, (li) => memoList.append(li));
-});
-```
-
-UTC 적용
-
-```javascript
-const getNow = () => new Date().toISOString();
-
-const setMemoDetail = (item) => {
-  const userLang = navigator.language || 'en-US';
-
-  memoTitle.value = item.title;
-  memo.value = item.content;
-  createdAt.textContent = new Date(item.createdAt).toLocaleString(userLang);
-  updatedAt.textContent = new Date(item.updatedAt).toLocaleString(userLang);
-}
-
-const renderMemoList = () => {
-  SMALL_MEMO.memoOrder.sort((a, b) => new Date(SMALL_MEMO.memos[b].updatedAt) - new Date(SMALL_MEMO.memos[a].updatedAt));
-  
-  SMALL_MEMO.memoOrder.forEach(id => {
-    const title = getMemo(id).title.trim();
-    createMemoElement(id, title || "memo", (li) => memoList.append(li))
-  });
-};
-```
+ <br>
