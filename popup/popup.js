@@ -18,8 +18,8 @@ const SMALL_MEMO = {
       "id": 1,
       "title": "First",
       "content": "",
-      "created at": getNow(),
-      "updated at": getNow()
+      "createdAt": getNow(),
+      "updatedAt": getNow()
     },
   }
 };
@@ -59,13 +59,9 @@ const createMemoElement = (id, title, callback) => {
   callback(li);
 }
 
-/**
- * @todo : 정렬 기능 추가
- * - 2024/12/25 : 수정 최신순
- */
 const renderMemoList = () => {
   SMALL_MEMO.memoOrder.sort((a, b) => new Date(SMALL_MEMO.memos[b].updatedAt) - new Date(SMALL_MEMO.memos[a].updatedAt));
-  
+
   SMALL_MEMO.memoOrder.forEach(id => {
     const title = getMemo(id).title.trim();
     createMemoElement(id, title || "memo", (li) => memoList.append(li))
@@ -171,4 +167,3 @@ deleteBtn.addEventListener("click", (e) => {
     modal.style.display = "none";
   };
 });
-
