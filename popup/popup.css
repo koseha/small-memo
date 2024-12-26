@@ -113,8 +113,8 @@ main {
 .tooltip {
   position: absolute;
   display: none;
-  background-color: rgba(0, 0, 0, 0.8);
-  color: white;
+  background-color: #1E3A8A;
+  color: #FFFFFF;
   padding: 5px 10px;
   border-radius: 5px;
   pointer-events: none;
@@ -123,7 +123,6 @@ main {
   font-size: 13px;
   height: 30px;
 }
-
 
 .content {
   flex: 1 0 0;
