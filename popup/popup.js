@@ -139,8 +139,10 @@ newMemo.addEventListener("click", (e) => {
  * 메모 수정-title
  */
 memoTitle.addEventListener("change", (e) => {
-  const id = document.querySelector("li.active").children[0].dataset.id;
+  const button = document.querySelector("li.active").children[0]; 
+  const id = button.dataset.id;
   const title = e.target.value;
+  button.textContent = title;
 
   SMALL_MEMO.memos[id].title = title;
   SMALL_MEMO.memos[id].updatedAt = getNow();
