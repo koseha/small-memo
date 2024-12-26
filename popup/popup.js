@@ -4,6 +4,7 @@ const createdAt = document.getElementById("createdAt");
 const updatedAt = document.getElementById("updatedAt");
 
 const memoList = document.getElementById("memoList");
+const tooltip = document.getElementById('tooltip');
 
 const STORAGE_NAME = "small_memo";
 const getNow = () => new Date().toISOString();
@@ -53,6 +54,21 @@ const createMemoElement = (id, title, callback) => {
     e.target.parentElement.classList.add("active");
 
     setMemoDetail(memo);
+  });
+
+  button.addEventListener('mouseenter', (e) => {
+    const text = e.target.textContent;
+    tooltip.textContent = text;
+    tooltip.style.display = 'block';
+  });
+
+  button.addEventListener('mousemove', (e) => {
+    tooltip.style.top = `${e.pageY - 30}px`;
+    tooltip.style.left = `${e.pageX}px`;
+  });
+
+  button.addEventListener('mouseleave', () => {
+    tooltip.style.display = 'none';
   });
 
   li.appendChild(button);
@@ -149,7 +165,7 @@ deleteBtn.addEventListener("click", (e) => {
   const modal = document.getElementById("deleteModal");
   modal.style.display = "block";
 
-  document.getElementById("confirmDelete").onclick = function() {
+  document.getElementById("confirmDelete").onclick = function () {
     const li = document.querySelector("li.active");
     const next = li.previousElementSibling ? li.previousElementSibling : li.nextElementSibling;
     li?.remove();
@@ -163,7 +179,7 @@ deleteBtn.addEventListener("click", (e) => {
     else newMemo.click();
   };
 
-  document.getElementById("cancelDelete").onclick = function() {
+  document.getElementById("cancelDelete").onclick = function () {
     modal.style.display = "none";
   };
 });
