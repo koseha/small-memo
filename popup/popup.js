@@ -4,6 +4,7 @@ const createdAt = document.getElementById("createdAt");
 const updatedAt = document.getElementById("updatedAt");
 
 const memoList = document.getElementById("memoList");
+const tooltip = document.getElementById('tooltip');
 
 const STORAGE_NAME = "small_memo";
 const getNow = () => new Date().toISOString();
@@ -18,8 +19,8 @@ const SMALL_MEMO = {
       "id": 1,
       "title": "First",
       "content": "",
-      "created at": getNow(),
-      "updated at": getNow()
+      "createdAt": getNow(),
+      "updatedAt": getNow()
     },
   }
 };
@@ -55,17 +56,28 @@ const createMemoElement = (id, title, callback) => {
     setMemoDetail(memo);
   });
 
+  button.addEventListener('mouseenter', (e) => {
+    const text = e.target.textContent;
+    tooltip.textContent = text;
+    tooltip.style.display = 'block';
+  });
+
+  button.addEventListener('mousemove', (e) => {
+    tooltip.style.top = `${e.pageY - 30}px`;
+    tooltip.style.left = `${e.pageX}px`;
+  });
+
+  button.addEventListener('mouseleave', () => {
+    tooltip.style.display = 'none';
+  });
+
   li.appendChild(button);
   callback(li);
 }
 
-/**
- * @todo : 정렬 기능 추가
- * - 2024/12/25 : 수정 최신순
- */
 const renderMemoList = () => {
   SMALL_MEMO.memoOrder.sort((a, b) => new Date(SMALL_MEMO.memos[b].updatedAt) - new Date(SMALL_MEMO.memos[a].updatedAt));
-  
+
   SMALL_MEMO.memoOrder.forEach(id => {
     const title = getMemo(id).title.trim();
     createMemoElement(id, title || "memo", (li) => memoList.append(li))
@@ -127,8 +139,10 @@ newMemo.addEventListener("click", (e) => {
  * 메모 수정-title
  */
 memoTitle.addEventListener("change", (e) => {
-  const id = document.querySelector("li.active").children[0].dataset.id;
+  const button = document.querySelector("li.active").children[0]; 
+  const id = button.dataset.id;
   const title = e.target.value;
+  button.textContent = title;
 
   SMALL_MEMO.memos[id].title = title;
   SMALL_MEMO.memos[id].updatedAt = getNow();
@@ -153,7 +167,7 @@ deleteBtn.addEventListener("click", (e) => {
   const modal = document.getElementById("deleteModal");
   modal.style.display = "block";
 
-  document.getElementById("confirmDelete").onclick = function() {
+  document.getElementById("confirmDelete").onclick = function () {
     const li = document.querySelector("li.active");
     const next = li.previousElementSibling ? li.previousElementSibling : li.nextElementSibling;
     li?.remove();
@@ -167,8 +181,7 @@ deleteBtn.addEventListener("click", (e) => {
     else newMemo.click();
   };
 
-  document.getElementById("cancelDelete").onclick = function() {
+  document.getElementById("cancelDelete").onclick = function () {
     modal.style.display = "none";
   };
 });
-

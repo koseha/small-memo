@@ -34,7 +34,7 @@ header h1 {
   margin-left: 10px;
 }
 textarea::placeholder {
-  color: #cbd5e1;
+  color: #8b8d8f;
 }
 .setting {
   width: 32px;
@@ -97,6 +97,9 @@ main {
   color: #d1d5db;
   position: relative;
 }
+.list__memo button:hover {
+  background: #798fb8;
+}
 .list__memo {
   border-bottom: 1px solid #9ca3af;
 }
@@ -104,13 +107,24 @@ main {
   background: #303841;
   color: #d8dee9;
 }
-
 .list__memo:last-child {
   border-bottom: none;
 }
+.tooltip {
+  position: absolute;
+  display: none;
+  background-color: #1E3A8A;
+  color: #FFFFFF;
+  padding: 5px 10px;
+  border-radius: 5px;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 1000;
+  font-size: 13px;
+  height: 30px;
+}
 
 .content {
-  background: #e461b2;
   flex: 1 0 0;
   display: flex;
   flex-direction: column;
