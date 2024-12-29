@@ -1,5 +1,0 @@
-https://techblog.woowahan.com/5900/
-
-https://developer.mozilla.org/ko/docs/Web/API/IndexedDB_API/Using_IndexedDB
-
-https://velog.io/@devjuun_s/Chrome.storage-%EC%A0%95%EB%A6%AC

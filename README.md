@@ -2,7 +2,7 @@
 
 ## 프로젝트명: Small Memo
 
-버전: 1.0  
+버전: 1.0.1  
 링크: [chrome 웹 스토어 - Small Memo](https://chromewebstore.google.com/detail/small-memo/ckggddlehlcmegnchapdeamiolcknoae?authuser=1&hl=ko)
 <br>
 
@@ -21,9 +21,9 @@ Small Memo는 사용자가 방문 중인 웹 페이지에서 간편하게 메모
 
 ### 기술 스택:
 
-  - HTML/CSS: UI 디자인 및 레이아웃 구성
-  - JavaScript: 메모 추가, 편집, 삭제 및 저장 로직 구현
-  - Chrome Extension Manifest V3: 크롬 확장 프로그램 개발 표준을 따릅니다.
+- HTML/CSS: UI 디자인 및 레이아웃 구성
+- JavaScript: 메모 추가, 편집, 삭제 및 저장 로직 구현
+- Chrome Extension Manifest V3: 크롬 확장 프로그램 개발 표준을 따릅니다.
 
 ### 권한:
 - storage: 확장 프로그램에서 메모 데이터를 저장하고 불러올 수 있는 권한을 사용합니다.
@@ -37,7 +37,7 @@ Small Memo는 사용자가 방문 중인 웹 페이지에서 간편하게 메모
 
 | 버전 | 날짜 | 상태 | 설명 |
 | --- | --- | --- | --- |
-| 1.0.1 | 예정 | 기획 | - 첫 팝업 로드 시 메모의 추가날짜 Invalid Date 표시되는 문제 해결<br> - 제목 수정 시 버튼에 반영되지 않는 문제 해결<br> - 사이드바 메모 호버 시 title 노출 <br> - ... |
+| 1.0.1 | 2024.12.26 | 출시 | - 첫 팝업 로드 시 메모의 추가날짜 Invalid Date 표시되는 문제 해결<br> - 제목 수정 시 버튼에 반영되지 않는 문제 해결<br> - 사이드바 메모 호버 시 title 노출 <br> - 사이드바 메모 호버 시 색상 변경<br> |
 | 1.0.0 (MVP) | 2024.12.25 | 출시 | - MVP<br> - 메모 작성, 수정, 삭제 기능 추가<br> - 수정 최신순 정렬 기능 추가<br> - `chrome.storage.local` 데이터 저장 |
 
 <br>
@@ -46,6 +46,8 @@ Small Memo는 사용자가 방문 중인 웹 페이지에서 간편하게 메모
 
 | 날짜 | 버전 | 설명 |
 | --- | --- | --- |
+| 2024.12.26 | 1.0.1 | Chrome Web Store에 게시 |
+| 2024.12.26 | 1.0.1 | Chrome Web Store에 제출하여 검토 요청 |
 | 2024.12.25 | 1.0.0 (MVP) | Chrome Web Store에 게시 |
 | 2024.12.25 | 1.0.0 (MVP) | Chrome Web Store에 제출하여 검토 요청 |
 
