@@ -1,6 +1,6 @@
 {
   "name": "Small Memo",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Easily take notes on any page you're visiting.",
   "manifest_version": 3,
   "icons": {
@@ -10,10 +10,8 @@
     "128": "images/small_memo_128x128.png"
   },
   "action": {
-    "default_popup": "popup/popup.html", 
+    "default_popup": "popup/popup.html",
     "default_icon": "images/small_memo_48x48.png"
   },
-  "permissions": [
-    "storage"
-  ]
+  "permissions": ["storage"]
 }
